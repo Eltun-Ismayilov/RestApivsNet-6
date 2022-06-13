@@ -1,4 +1,5 @@
-﻿using Domain;
+﻿using Application.ErrorResponses;
+using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
@@ -12,12 +13,12 @@ namespace Application.ActivityM.Query
 {
     public class Details
     {
-        public class Query : IRequest<Activity> 
+        public class Query : IRequest<Result<Activity>> 
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Activity>
+        public class Handler : IRequestHandler<Query, Result<Activity>>
         {
             private readonly DataContext context;
 
@@ -25,9 +26,10 @@ namespace Application.ActivityM.Query
             {
                 this.context = context;
             }
-            public async Task<Activity> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<Activity>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await context.Activities.FirstOrDefaultAsync(a=>a.Id==request.Id && a.DeleteData==null);
+                var activity= await context.Activities.FirstOrDefaultAsync(a=>a.Id==request.Id && a.DeleteData==null);
+                return Result<Activity>.Success(activity);
             }
         }
     }

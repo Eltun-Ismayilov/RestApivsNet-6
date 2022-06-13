@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using Application.ErrorResponses;
+using MediatR;
 using Persistence;
 using System;
 using System.Collections.Generic;
@@ -10,12 +11,12 @@ namespace Application.ActivityM.Comman
 {
     public class Delete
     {
-        public class Command : IRequest
+        public class Command : IRequest<Result<Unit>>
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Command>
+        public class Handler : IRequestHandler<Command, Result<Unit>>
         {
             private readonly DataContext context;
 
@@ -23,12 +24,15 @@ namespace Application.ActivityM.Comman
             {
                 this.context = context;
             }
-            public async Task<Unit> Handle(Command request, CancellationToken cancellationToken)
+            public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
                 var activity= await context.Activities.FindAsync(request.Id);
                 activity.DeleteData = DateTime.UtcNow;
-                await context.SaveChangesAsync(cancellationToken);
-                return Unit.Value;
+                if (activity == null)  return null;
+              var result=  await context.SaveChangesAsync(cancellationToken)>0;
+                if (!result) return Result<Unit>.Failure("Failed to delete the activitty");
+
+                return Result<Unit>.Success(Unit.Value);
             }
         }
     }

@@ -1,6 +1,7 @@
 using Application.ActivityM.Comman;
 using Application.ActivityM.Query;
 using Application.Extensions;
+using Application.Middleware;
 using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,7 +22,7 @@ if (app.Environment.IsDevelopment())
 
 var data = app.Services.CreateScope();
 app.UseAuthorization();
-
+app.UseMiddleware<ExceptionMiddleware>();
 app.MapControllers();
 
 app.Run();
