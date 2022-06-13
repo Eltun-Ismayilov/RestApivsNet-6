@@ -1,4 +1,5 @@
 ﻿using Domain;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 namespace Persistence
 {
@@ -6,7 +7,18 @@ namespace Persistence
     {
         public static async Task SeedData(this IServiceCollection services)
         {
-
+            var userManager = services.BuildServiceProvider().GetRequiredService<UserManager<AppUser>>();
+            if (!userManager.Users.Any())
+            {
+                var users = new List<AppUser>();
+                users.Add(new AppUser { DisplayName = "Eltun", UserName = "eltun", Email = "eltun@mail.com" });
+                users.Add(new AppUser { DisplayName = "Tural", UserName = "tural", Email = "tural@mail.com" });
+                users.Add(new AppUser { DisplayName = "Anar", UserName = "anar", Email = "anar@mail.com" });
+                foreach (var user in users)
+                {
+                    await userManager.CreateAsync(user, "Pa$$w0rd");
+                }
+            }
             var context = services.BuildServiceProvider().GetRequiredService<DataContext>();
             if (!context.Activities.Any())
             {

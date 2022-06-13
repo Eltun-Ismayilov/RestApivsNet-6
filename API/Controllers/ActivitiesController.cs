@@ -1,21 +1,20 @@
 ﻿using Application.ActivityM.Comman;
 using Application.ActivityM.Query;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
+
     public class ActivitiesController : BaseApiController
     {
-
         [HttpGet]
         public async Task<IActionResult> Get()
         {
             return HandleResult(await Mediator.Send(new List.Query()));
         }
-
+        //[Authorize]//Icaze vermir gerek login olmalisan
         [HttpGet("{id}")]
         public async Task<IActionResult> Details(Guid id)
         {
