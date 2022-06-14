@@ -1,4 +1,6 @@
 ﻿using Application.ErrorResponses;
+using Application.VM;
+using AutoMapper;
 using Domain;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,23 +15,32 @@ namespace Application.ActivityM.Query
 {
     public class Details
     {
-        public class Query : IRequest<Result<Activity>> 
+        public class Query : IRequest<Result<ActivityVm>> 
         {
             public Guid Id { get; set; }
         }
 
-        public class Handler : IRequestHandler<Query, Result<Activity>>
+        public class Handler : IRequestHandler<Query, Result<ActivityVm>>
         {
             private readonly DataContext context;
+            private readonly IMapper mapper;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context,IMapper mapper)
             {
                 this.context = context;
+                this.mapper = mapper;
             }
-            public async Task<Result<Activity>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<ActivityVm>> Handle(Query request, CancellationToken cancellationToken)
             {
-                var activity= await context.Activities.FirstOrDefaultAsync(a=>a.Id==request.Id && a.DeleteData==null);
-                return Result<Activity>.Success(activity);
+
+                var activities = await context.Activities
+                   .Include(a => a.Attendees)
+                   .ThenInclude(a => a.AppUser)
+                   .FirstOrDefaultAsync(x=>x.Id==request.Id);
+
+                var vm = mapper.Map<ActivityVm>(activities);
+
+                return Result<ActivityVm>.Success(vm);
             }
         }
     }
