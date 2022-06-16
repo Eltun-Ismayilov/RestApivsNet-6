@@ -1,5 +1,6 @@
 ﻿using Application.TokenServiceProvider;
 using Domain;
+using Infrastructure.Interface;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +36,14 @@ namespace Application.Extensions
                     ValidateAudience = false,
                 };
             });
+            services.AddAuthorization(opt =>
+            {
+                opt.AddPolicy("IsActivityHost", policy =>
+                {
+                    policy.Requirements.Add(new IsHostRequirement());
+                });
+            });
+        
             services.AddScoped<TokenService>();
 
             return services;

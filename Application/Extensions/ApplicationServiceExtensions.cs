@@ -5,6 +5,7 @@ using Domain;
 using Infrastructure.Interface;
 using Infrastructure.Service;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -22,6 +23,7 @@ namespace Application.Extensions
             services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddScoped<IUserAccessor, UserAccessor>();
+            services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
             return services;
         }
     }

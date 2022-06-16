@@ -47,9 +47,9 @@ namespace Application.ActivityM.Comman
                     Activity = request.Activity,
                     IsHost = true
                 };
+
                 request.Activity.Attendees.Add(attendee);
-
-
+                
                 request.Activity.CreateData = DateTime.Now;
                 await context.Activities.AddAsync(request.Activity);
                 var result=await context.SaveChangesAsync(cancellationToken)>0;

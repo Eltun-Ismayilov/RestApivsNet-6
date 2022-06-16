@@ -1,6 +1,5 @@
 ﻿using Domain;
 using Infrastructure.Interface;
-
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
@@ -21,8 +20,8 @@ namespace Infrastructure.Service
 
         public string GetUsername()
         {
-            return  httpContextAccessor.HttpContext.User.FindFirst("Username").Value;
+            return httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Name);
         }
-        
+
     }
 }
