@@ -3,6 +3,7 @@ using Application.AutoMapper;
 using Application.TokenServiceProvider;
 using Domain;
 using Infrastructure.Interface;
+using Infrastructure.Photos;
 using Infrastructure.Service;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,8 @@ namespace Application.Extensions
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddScoped<IUserAccessor, UserAccessor>();
             services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
+            services.Configure<CloudinarySettings>(configuration.GetSection("Cloudinary"));
+            
             return services;
         }
     }
