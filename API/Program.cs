@@ -44,7 +44,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 builder.Services.AddApplicationServices(configuration);
 builder.Services.AddIdentityServices(configuration);
-await builder.Services.SeedData();
+//await builder.Services.SeedData();
 
 var app = builder.Build();
 
