@@ -1,4 +1,5 @@
-﻿using Application.VM;
+﻿using Application.DTO;
+using Application.VM;
 using AutoMapper;
 using Domain;
 
@@ -17,6 +18,13 @@ namespace Application.AutoMapper
                  .ForMember(vm => vm.DisplayName, a => a.MapFrom(a => a.AppUser.DisplayName))
                   .ForMember(vm => vm.Bio, a => a.MapFrom(a => a.AppUser.Bio))
                  .ForMember(vm => vm.Username, a => a.MapFrom(a => a.AppUser.UserName));
+
+
+
+            CreateMap<Comment, CommentDto>()
+                   .ForMember(vm => vm.DisplayName, a => a.MapFrom(a => a.Authot.DisplayName))
+                   .ForMember(vm => vm.Username, a => a.MapFrom(a => a.Authot.UserName)) 
+                   .ForMember(vm => vm.Username, a => a.MapFrom(a => a.Authot.Photos.FirstOrDefault(X => X.IsMain).Url));
 
         }
     }

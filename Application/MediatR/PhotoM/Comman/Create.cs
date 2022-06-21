@@ -34,6 +34,7 @@ namespace Application.MediatR.PhotoM.Comman
             {
                 var user = await db.Users.Include(x => x.Photos)
                     .FirstOrDefaultAsync(x => x.UserName == userAccessor.GetUsername());
+
                 if (user == null) return null;
                 var photoUpload = await photoAccessor.AddPhoto(request.File);
                 var photo = new Photo

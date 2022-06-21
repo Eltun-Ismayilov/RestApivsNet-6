@@ -1,3 +1,4 @@
+using API.MiddleWare;
 using Application.ActivityM.Comman;
 using Application.Extensions;
 using Application.Middleware;
@@ -52,6 +53,7 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCustomExceptionHandler();
 }
 
 var data = app.Services.CreateScope();
