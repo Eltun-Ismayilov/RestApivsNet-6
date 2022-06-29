@@ -1,9 +1,11 @@
 using API.MiddleWare;
+using API.SignalR;
 using Application.ActivityM.Comman;
 using Application.Extensions;
 using Application.Middleware;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.OpenApi.Models;
 using Persistence;
@@ -44,6 +46,7 @@ builder.Services.AddSwaggerGen(c =>
                 });
 });
 builder.Services.AddApplicationServices(configuration);
+
 builder.Services.AddIdentityServices(configuration);
 //await builder.Services.SeedData();
 
@@ -59,6 +62,11 @@ if (app.Environment.IsDevelopment())
 var data = app.Services.CreateScope();
 app.UseAuthentication();
 app.UseAuthorization();
+//app.UseEndpoints(endpoints =>
+//{
+//   // endpoints.MapControllers();
+//    endpoints.MapHub<ChatHub>("/chat");
+//});
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.MapControllers();

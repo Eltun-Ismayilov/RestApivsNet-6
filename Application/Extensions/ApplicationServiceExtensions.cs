@@ -27,6 +27,7 @@ namespace Application.Extensions
             services.AddTransient<IAuthorizationHandler, IsHostRequirementHandler>();
             services.AddScoped<IPhotoAccessor, PhotoAccessor>();
             services.Configure<CloudinarySettings>(configuration.GetSection("Cloudinary"));
+            services.AddSignalR();
             
             return services;
         }

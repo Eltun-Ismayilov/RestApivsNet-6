@@ -12,8 +12,8 @@ using Persistence;
 namespace Persistence.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220621125758_camo")]
-    partial class camo
+    [Migration("20220628125458_init_1")]
+    partial class init_1
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

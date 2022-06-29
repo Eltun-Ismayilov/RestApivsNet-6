@@ -41,9 +41,13 @@ namespace Application.MediatR.PhotoM.Comman
                 {
                     Url = photoUpload.Url,
                     Id = photoUpload.PublicId,
+                    
                 };
+
                 if (!user.Photos.Any(x => x.IsMain)) photo.IsMain = true;
+
                 db.Photos.Add(photo);
+
                 var result = await db.SaveChangesAsync() > 0;
                 if (result)
                 {

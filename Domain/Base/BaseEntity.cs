@@ -12,7 +12,5 @@ namespace Domain.Base
         public DateTime CreateData { get; set; }
         public DateTime? UpdateData { get; set; }
         public DateTime? DeleteData { get; set; }
-
-
     }
 }
