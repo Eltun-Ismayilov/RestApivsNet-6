@@ -5,11 +5,6 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.MediatR.PhotoM.Comman
 {
@@ -46,7 +41,7 @@ namespace Application.MediatR.PhotoM.Comman
 
                 if (!user.Photos.Any(x => x.IsMain)) photo.IsMain = true;
 
-                db.Photos.Add(photo);
+                user.Photos.Add(photo);
 
                 var result = await db.SaveChangesAsync() > 0;
                 if (result)

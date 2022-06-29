@@ -1,5 +1,6 @@
 ﻿using Application.ActivityM.Comman;
 using Application.ActivityM.Query;
+using Application.Pagination;
 using Domain;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,9 @@ namespace API.Controllers
     public class ActivitiesController : BaseApiController
     {
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] PagingParams param)
         {
-            return HandleResult(await Mediator.Send(new List.Query()));
+            return HandleResult(await Mediator.Send(new List.Query { Params = param }));
         }
         //[Authorize]//Icaze vermir gerek login olmalisan
         [HttpGet("{id}")]

@@ -15,12 +15,13 @@ namespace Application.ActivityM.Query
 {
     public class Details
     {
-        public class Query : IRequest<Result<ActivityVm>> 
+        public class Query : IRequest<Result<ActivityDTO>> 
         {
             public Guid Id { get; set; }
+
         }
 
-        public class Handler : IRequestHandler<Query, Result<ActivityVm>>
+        public class Handler : IRequestHandler<Query, Result<ActivityDTO>>
         {
             private readonly DataContext context;
             private readonly IMapper mapper;
@@ -30,7 +31,7 @@ namespace Application.ActivityM.Query
                 this.context = context;
                 this.mapper = mapper;
             }
-            public async Task<Result<ActivityVm>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<ActivityDTO>> Handle(Query request, CancellationToken cancellationToken)
             {
 
                 var activities = await context.Activities
@@ -38,9 +39,9 @@ namespace Application.ActivityM.Query
                    .ThenInclude(a => a.AppUser)
                    .FirstOrDefaultAsync(x=>x.Id==request.Id);
 
-                var vm = mapper.Map<ActivityVm>(activities);
+                var vm = mapper.Map<ActivityDTO>(activities);
 
-                return Result<ActivityVm>.Success(vm);
+                return Result<ActivityDTO>.Success(vm);
             }
         }
     }
